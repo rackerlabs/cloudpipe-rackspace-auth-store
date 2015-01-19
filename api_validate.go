@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/rackspace/gophercloud"
+	"github.com/rackspace/gophercloud/rackspace"
 )
 
 // ValidateHandler determines whether or not an API key is valid for a specific account.
@@ -29,20 +31,32 @@ func ValidateHandler(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: Ferret calls to Rackspace Identity
-	ok := true
+	ao := gophercloud.AuthOptions{
+		Username: accountName,
+		APIKey:   apiKey,
+	}
+
+	provider, err := rackspace.AuthenticatedClient(ao)
+	// TODO: Use the internal API and validate the key using a system account
+	//identityClient := rackspace.NewIdentityV2(provider)
 
 	var message string
-	if ok {
+	if err == nil {
 		w.WriteHeader(http.StatusNoContent)
 		message = "API key successfully validated."
 	} else {
 		w.WriteHeader(http.StatusNotFound)
 		message = "Invalid API key encountered."
+
+		log.WithFields(log.Fields{
+			"provider": provider,
+			"err":      err,
+		}).Info(message)
 	}
 
 	log.WithFields(log.Fields{
 		"account": accountName,
 		"key":     apiKey,
 	}).Info(message)
+
 }
