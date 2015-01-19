@@ -11,6 +11,20 @@
 			"ImportPath": "github.com/kelseyhightower/envconfig",
 			"Comment": "v1.0.0-6-ge904934",
 			"Rev": "e9049346b6aae8e6ad500c5a4519ad029439d660"
+		},
+		{
+			"ImportPath": "github.com/mitchellh/mapstructure",
+			"Rev": "740c764bc6149d3f1806231418adb9f52c11bcbf"
+		},
+		{
+			"ImportPath": "github.com/racker/perigee",
+			"Comment": "v0.0.0-11-g01db319",
+			"Rev": "01db3191866051f2ec854c2d876ac1a179d3049c"
+		},
+		{
+			"ImportPath": "github.com/rackspace/gophercloud",
+			"Comment": "v1.0.0-239-g4bc0d65",
+			"Rev": "4bc0d65f88a8b60df59778baa0b10e5a76dd68c9"
 		}
 	]
 }
