@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -o errexit
+
+ROOT=$(dirname $0)/..
+cd ${ROOT}
+
+fig build >/dev/null 2>&1 || echo "fig build failed!"
+
+exec fig run --no-deps --rm devrax go test github.com/rackerlabs/cloudpipe-rackspace-auth-store/... $@
