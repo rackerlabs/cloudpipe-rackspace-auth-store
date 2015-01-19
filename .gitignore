@@ -3,6 +3,8 @@
 *.a
 *.so
 
+certificates
+
 # Folders
 _obj
 _test

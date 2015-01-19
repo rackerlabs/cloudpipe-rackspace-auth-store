@@ -1,0 +1,13 @@
+---
+devrax:
+  build: .
+  environment:
+    AUTH_LOGLEVEL: debug
+    AUTH_LOGCOLORS: "true"
+    AUTH_INTERNALCACERT: /certificates/auth-store-cert.pem
+  expose:
+  - "9001"
+  ports:
+  - "9000:9000"
+  volumes:
+  - "certificates:/certificates"

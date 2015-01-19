@@ -1,0 +1,16 @@
+{
+	"ImportPath": "github.com/rackerlabs/cloudpipe-rackspace-auth-store",
+	"GoVersion": "go1.4",
+	"Deps": [
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.6.4",
+			"Rev": "58f778a886b1e483dccc3b61085ccf347bf1a37e"
+		},
+		{
+			"ImportPath": "github.com/kelseyhightower/envconfig",
+			"Comment": "v1.0.0-6-ge904934",
+			"Rev": "e9049346b6aae8e6ad500c5a4519ad029439d660"
+		}
+	]
+}
