@@ -1,0 +1,1 @@
+This directory is git ignored, and populated using `script/genkeys` during development runs. If any keys show up in here outside of a dev environment, a thousand burning :sun:s will fall from the sky.

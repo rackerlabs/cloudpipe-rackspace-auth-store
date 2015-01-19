@@ -4,7 +4,11 @@ devrax:
   environment:
     AUTH_LOGLEVEL: debug
     AUTH_LOGCOLORS: "true"
-    AUTH_INTERNALCACERT: /certificates/auth-store-cert.pem
+    AUTH_INTERNALCACERT: /certificates/ca.pem
+    AUTH_INTERNALCERT: /certificates/auth-store-cert.pem
+    AUTH_INTERNALKEY: /certificates/auth-store-key.pem
+    AUTH_EXTERNALCERT: /certificates/external-cert.pem
+    AUTH_EXTERNALKEY: /certificates/external-key.pem
   expose:
   - "9001"
   ports:
