@@ -60,7 +60,7 @@ func ValidateHandler(c *Context, w http.ResponseWriter, r *http.Request) {
 			log.WithFields(log.Fields{
 				"provider": provider,
 				"err":      err,
-			}).Info(message)
+			})
 		}
 
 	}
