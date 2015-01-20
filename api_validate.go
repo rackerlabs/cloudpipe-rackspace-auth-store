@@ -37,8 +37,6 @@ func ValidateHandler(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	provider, err := rackspace.AuthenticatedClient(ao)
-	// TODO: Use the internal API and validate the key using a system account
-	//identityClient := rackspace.NewIdentityV2(provider)
 
 	var message string
 	if err == nil {
