@@ -6,11 +6,14 @@ import (
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/kelseyhightower/envconfig"
+	lruks "github.com/rgbkrk/lru-key-store"
 )
 
 // Context provides shared state among route handlers.
 type Context struct {
 	Settings
+
+	KeyStore *lruks.KeyStore
 }
 
 // Settings contains configuration options loaded from the environment.
@@ -24,6 +27,7 @@ type Settings struct {
 	InternalKey    string
 	ExternalCert   string
 	ExternalKey    string
+	CacheSize      int
 }
 
 // Load reads configuration settings from the environment and validates them.
@@ -38,6 +42,10 @@ func (c *Context) Load() error {
 
 	if c.ExternalPort == 0 {
 		c.ExternalPort = 9000
+	}
+
+	if c.CacheSize == 0 {
+		c.CacheSize = 10000
 	}
 
 	if c.LogLevel == "" {
@@ -103,7 +111,14 @@ func NewContext() (*Context, error) {
 		"internal key":     c.InternalKey,
 		"external cert":    c.ExternalCert,
 		"external key":     c.ExternalKey,
+		"cache size":       c.CacheSize,
 	}).Info("Initializing with loaded settings.")
+
+	c.KeyStore, err = lruks.New(c.CacheSize)
+
+	if err != nil {
+		return c, err
+	}
 
 	return c, nil
 }
