@@ -70,7 +70,7 @@ func ValidateHandler(c *Context, w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusNotFound)
-	message = "Rackspace Identity rejected"
+	message = "Rackspace Identity rejected credentials."
 
 	log.WithFields(log.Fields{
 		"account": accountName,
