@@ -31,25 +31,38 @@ func ValidateHandler(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	ao := gophercloud.AuthOptions{
-		Username: accountName,
-		APIKey:   apiKey,
-	}
-
-	provider, err := rackspace.AuthenticatedClient(ao)
-
 	var message string
-	if err == nil {
-		w.WriteHeader(http.StatusNoContent)
-		message = "API key successfully validated."
-	} else {
-		w.WriteHeader(http.StatusNotFound)
-		message = "Invalid API key encountered."
 
-		log.WithFields(log.Fields{
-			"provider": provider,
-			"err":      err,
-		}).Info(message)
+	// Is the key cached?
+	if c.KeyStore.IsIn(accountName, apiKey) {
+		w.WriteHeader(http.StatusNoContent)
+		message = "Cached API key successfully validated."
+
+	} else {
+		ao := gophercloud.AuthOptions{
+			Username: accountName,
+			APIKey:   apiKey,
+		}
+
+		provider, err := rackspace.AuthenticatedClient(ao)
+
+		if err == nil {
+			w.WriteHeader(http.StatusNoContent)
+			message = "API key successfully validated."
+
+			// API key was valid, so we can cache it
+			c.KeyStore.Add(accountName, apiKey)
+
+		} else {
+			w.WriteHeader(http.StatusNotFound)
+			message = "Invalid API key encountered."
+
+			log.WithFields(log.Fields{
+				"provider": provider,
+				"err":      err,
+			}).Info(message)
+		}
+
 	}
 
 	log.WithFields(log.Fields{
