@@ -75,6 +75,6 @@ func ValidateHandler(c *Context, w http.ResponseWriter, r *http.Request) {
 	log.WithFields(log.Fields{
 		"account": accountName,
 		"err":     err,
-	}).Info("Rackspace Identity Error.")
+	}).Info(message)
 
 }
