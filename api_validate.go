@@ -38,36 +38,43 @@ func ValidateHandler(c *Context, w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		message = "Cached API key successfully validated."
 
-	} else {
-		ao := gophercloud.AuthOptions{
-			Username: accountName,
-			APIKey:   apiKey,
-		}
-
-		provider, err := rackspace.AuthenticatedClient(ao)
-
-		if err == nil {
-			w.WriteHeader(http.StatusNoContent)
-			message = "API key successfully validated."
-
-			// API key was valid, so we can cache it
-			c.KeyStore.Add(accountName, apiKey)
-
-		} else {
-			w.WriteHeader(http.StatusNotFound)
-			message = "Invalid API key encountered."
-
-			log.WithFields(log.Fields{
-				"provider": provider,
-				"err":      err,
-			})
-		}
+		log.WithFields(log.Fields{
+			"account": accountName,
+		}).Info(message)
+		return
 
 	}
 
+	// Key is not cached, do the full call to Rackspace Identity
+	ao := gophercloud.AuthOptions{
+		Username: accountName,
+		APIKey:   apiKey,
+	}
+
+	// We only care to know if there was an error or not
+	_, err := rackspace.AuthenticatedClient(ao)
+
+	if err == nil {
+		w.WriteHeader(http.StatusNoContent)
+
+		// API key was valid, so we can cache it
+		c.KeyStore.Add(accountName, apiKey)
+
+		message = "API key successfully validated and cached."
+
+		log.WithFields(log.Fields{
+			"account": accountName,
+		}).Info(message)
+		return
+
+	}
+
+	w.WriteHeader(http.StatusNotFound)
+	message = "Rackspace Identity rejected"
+
 	log.WithFields(log.Fields{
 		"account": accountName,
-		"key":     apiKey,
-	}).Info(message)
+		"err":     err,
+	}).Info("Rackspace Identity Error.")
 
 }
