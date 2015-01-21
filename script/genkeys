@@ -105,5 +105,8 @@ selfsigned() {
 # Keypair for the authentication server.
 keypair auth-store authstore "true"
 
+# Keypair for the API and job runner.
+keypair cloudpipe cloudpipe "true"
+
 # Self-signed, independent keypair to be used by externally accessible endpoints.
 selfsigned external
