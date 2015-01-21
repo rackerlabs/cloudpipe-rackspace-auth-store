@@ -8,6 +8,10 @@
 			"Rev": "58f778a886b1e483dccc3b61085ccf347bf1a37e"
 		},
 		{
+			"ImportPath": "github.com/hashicorp/golang-lru",
+			"Rev": "253b2dc1ca8bae42c3b5b6e53dd2eab1a7551116"
+		},
+		{
 			"ImportPath": "github.com/kelseyhightower/envconfig",
 			"Comment": "v1.0.0-6-ge904934",
 			"Rev": "e9049346b6aae8e6ad500c5a4519ad029439d660"
@@ -25,6 +29,10 @@
 			"ImportPath": "github.com/rackspace/gophercloud",
 			"Comment": "v1.0.0-239-g4bc0d65",
 			"Rev": "4bc0d65f88a8b60df59778baa0b10e5a76dd68c9"
+		},
+		{
+			"ImportPath": "github.com/rgbkrk/lru-key-store",
+			"Rev": "c440ef62aa005bdfdd0ebfa941ac12fc8dd85adf"
 		}
 	]
 }

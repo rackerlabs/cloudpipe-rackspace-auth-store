@@ -31,30 +31,50 @@ func ValidateHandler(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var message string
+
+	// Is the key cached?
+	if c.KeyStore.IsIn(accountName, apiKey) {
+		w.WriteHeader(http.StatusNoContent)
+		message = "Cached API key successfully validated."
+
+		log.WithFields(log.Fields{
+			"account": accountName,
+		}).Info(message)
+		return
+
+	}
+
+	// Key is not cached, do the full call to Rackspace Identity
 	ao := gophercloud.AuthOptions{
 		Username: accountName,
 		APIKey:   apiKey,
 	}
 
-	provider, err := rackspace.AuthenticatedClient(ao)
+	// We only care to know if there was an error or not
+	_, err := rackspace.AuthenticatedClient(ao)
 
-	var message string
 	if err == nil {
 		w.WriteHeader(http.StatusNoContent)
-		message = "API key successfully validated."
-	} else {
-		w.WriteHeader(http.StatusNotFound)
-		message = "Invalid API key encountered."
+
+		// API key was valid, so we can cache it
+		c.KeyStore.Add(accountName, apiKey)
+
+		message = "API key successfully validated and cached."
 
 		log.WithFields(log.Fields{
-			"provider": provider,
-			"err":      err,
+			"account": accountName,
 		}).Info(message)
+		return
+
 	}
+
+	w.WriteHeader(http.StatusNotFound)
+	message = "Rackspace Identity rejected credentials."
 
 	log.WithFields(log.Fields{
 		"account": accountName,
-		"key":     apiKey,
+		"err":     err,
 	}).Info(message)
 
 }
