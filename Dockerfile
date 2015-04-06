@@ -4,7 +4,7 @@ RUN useradd pipe && \
   go get github.com/tools/godep && \
   chown -R pipe:pipe /go
 
-USER pipe
+#USER pipe
 
 ADD ./Godeps /go/src/github.com/rackerlabs/cloudpipe-rackspace-auth-store/Godeps
 WORKDIR /go/src/github.com/rackerlabs/cloudpipe-rackspace-auth-store/
